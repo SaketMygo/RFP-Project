@@ -46,6 +46,36 @@ else:
     DOC_ROOT_DIR = r"C:\Users\Saket Dronamraju\Desktop\RFP project\01-RFPs-RFIs-RFQs"
     ACTIVE_BIDS_DIR = r"C:\Users\Saket Dronamraju\Desktop\RFP project\01-RFPs-RFIs-RFQs\Active Bids"
 
+def resolve_bid_folder_path(db_folder_path: str) -> str:
+    if not db_folder_path:
+        return db_folder_path
+    folder_name = os.path.basename(db_folder_path.rstrip("/\\"))
+    resolved_path = os.path.join(ACTIVE_BIDS_DIR, folder_name)
+    return resolved_path
+
+class DynamicPathCursor(RealDictCursor):
+    def fetchone(self):
+        row = super().fetchone()
+        if row and 'folder_path' in row:
+            row['folder_path'] = resolve_bid_folder_path(row['folder_path'])
+        return row
+
+    def fetchall(self):
+        rows = super().fetchall()
+        if rows:
+            for row in rows:
+                if row and 'folder_path' in row:
+                    row['folder_path'] = resolve_bid_folder_path(row['folder_path'])
+        return rows
+
+    def fetchmany(self, size=None):
+        rows = super().fetchmany(size)
+        if rows:
+            for row in rows:
+                if row and 'folder_path' in row:
+                    row['folder_path'] = resolve_bid_folder_path(row['folder_path'])
+        return rows
+
 def get_db_connection():
     return psycopg2.connect(
         dbname=DB_NAME,
@@ -53,7 +83,7 @@ def get_db_connection():
         password=DB_PASSWORD,
         host=DB_HOST,
         port=DB_PORT,
-        cursor_factory=RealDictCursor
+        cursor_factory=DynamicPathCursor
     )
 
 # Pydantic models for request bodies
