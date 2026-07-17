@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+psycopg2-binary
+pandas
+google-genai
+python-dotenv
+sentence-transformers
+python-docx
+pypdf
+python-pptx
+chromadb

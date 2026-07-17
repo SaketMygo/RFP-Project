@@ -1,0 +1,25 @@
+# Database & Credentials
+.env
+
+# Python Virtual Environments
+.venv/
+env/
+venv/
+ENV/
+
+# Python compiled cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Database Cache & Scratch Folders
+chroma_db/
+scratch/
+.agents/
+
+# OS-generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+~$*

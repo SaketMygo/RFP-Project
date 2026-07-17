@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BidGenius AI - RFP & Proposal Automation</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css?v=1.0.10">
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="app-container">
+        <!-- Sidebar Navigation -->
+        <aside>
+            <div class="sidebar-header">
+                <div class="logo-icon">BG</div>
+                <div class="logo-text">BidGenius<span>AI</span></div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a class="nav-item active" data-page="dashboard">
+                    <i data-lucide="layout-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a class="nav-item" data-page="tasks">
+                    <i data-lucide="check-square"></i>
+                    <span>My Tasks</span>
+                    <span class="nav-badge" id="tasks-badge">0</span>
+                </a>
+                <a class="nav-item" data-page="bids">
+                    <i data-lucide="folder-kanban"></i>
+                    <span>Bids</span>
+                    <span class="nav-badge" id="bids-badge">0</span>
+                </a>
+
+                <a class="nav-item" data-page="knowledge">
+                    <i data-lucide="book-open"></i>
+                    <span>Knowledge Repository</span>
+                </a>
+                <a class="nav-item" data-page="documents">
+                    <i data-lucide="files"></i>
+                    <span>Document Repository</span>
+                </a>
+                <a class="nav-item" data-page="certificates">
+                    <i data-lucide="award"></i>
+                    <span>Certificates</span>
+                </a>
+                <a class="nav-item" data-page="sources">
+                    <i data-lucide="database"></i>
+                    <span>Sources</span>
+                </a>
+                <a class="nav-item" data-page="analytics">
+                    <i data-lucide="bar-chart-3"></i>
+                    <span>Analytics</span>
+                </a>
+                <a class="nav-item" data-page="admin">
+                    <i data-lucide="shield-check"></i>
+                    <span>Administration</span>
+                </a>
+                <a class="nav-item" data-page="settings">
+                    <i data-lucide="settings"></i>
+                    <span>Configuration</span>
+                </a>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a class="nav-item" data-page="notifications">
+                    <i data-lucide="bell"></i>
+                    <span>Notifications</span>
+                    <span class="nav-badge" id="notif-badge">3</span>
+                </a>
+                <a class="nav-item" data-page="help">
+                    <i data-lucide="help-circle"></i>
+                    <span>Help & Support</span>
+                </a>
+                <a class="nav-item" id="logout-btn" style="color: var(--error); cursor: pointer; margin-top: 4px;">
+                    <i data-lucide="log-out"></i>
+                    <span>Sign Out</span>
+                </a>
+            </div>
+        </aside>
+        
+        <!-- Main Panel -->
+        <main>
+            <!-- Header Bar -->
+            <header>
+                <div class="header-title-area">
+                    <h2 id="header-breadcrumb">Dashboard / Overview</h2>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="notification-bell" id="bell-icon">
+                        <i data-lucide="bell"></i>
+                        <span class="bell-badge"></span>
+                    </div>
+                    
+                    <div class="user-profile">
+                        <div class="avatar">PS</div>
+                        <div class="user-info">
+                            <div class="user-name">Priya Sharma</div>
+                            <div class="user-role">Bid Director</div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Dynamic Content Window -->
+            <div class="page-body" id="page-content">
+                <!-- Content gets loaded here via app.js -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Requirement Detail / Update Modal -->
+    <div class="modal-overlay" id="requirement-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 id="modal-req-id">Requirement Workspace</h3>
+                <span class="modal-close" id="close-modal-btn" style="cursor:pointer; display:flex; align-items:center; justify-content:center;"><i data-lucide="x"></i></span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>RFP Content</label>
+                    <p style="font-size: 15px; line-height: 1.5; color: var(--text-main); font-weight: 500;" id="modal-question-text"></p>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Item Type</label>
+                        <select id="modal-type" class="filter-select" style="width:100%;">
+                            <option value="Question">Question</option>
+                            <option value="Requirement">Requirement</option>
+                            <option value="Instruction">Instruction</option>
+                            <option value="Context">Context</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>SAP Module</label>
+                        <select id="modal-sap-module" class="filter-select" style="width:100%;">
+                            <option value="FICO">FICO</option>
+                            <option value="MM">MM</option>
+                            <option value="SD">SD</option>
+                            <option value="SCM">SCM</option>
+                            <option value="BASIS">BASIS</option>
+                            <option value="HCM">HCM</option>
+                            <option value="PP">PP</option>
+                            <option value="QM">QM</option>
+                            <option value="PM">PM</option>
+                            <option value="WM">WM</option>
+                            <option value="EWM">EWM</option>
+                            <option value="PS">PS</option>
+                            <option value="PLM">PLM</option>
+                            <option value="Ariba">Ariba</option>
+                            <option value="SuccessFactors">SuccessFactors</option>
+                            <option value="Cross-Application">Cross-Application</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Compliance Fitment</label>
+                        <select id="modal-fitment" class="filter-select" style="width:100%;">
+                            <option value="Full Compliance">Full Compliance</option>
+                            <option value="Configurable">Configurable</option>
+                            <option value="Custom Development">Custom Development</option>
+                            <option value="Third-Party Solution">Third-Party Solution</option>
+                            <option value="Need Further Info">Need Further Info</option>
+                            <option value="Non-Compliant">Non-Compliant</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div class="form-group">
+                        <label>Assigned SME</label>
+                        <select id="modal-sme" class="filter-select" style="width:100%;">
+                            <option value="Unassigned">Unassigned</option>
+                            <option value="Sarah Jenkins">Sarah Jenkins (SAP Delivery Head)</option>
+                            <option value="Rohan Mehta">Rohan Mehta (Finance Controller)</option>
+                            <option value="Priya Sharma">Priya Sharma (Bid Director)</option>
+                            <option value="Saket Dronamraju">Saket Dronamraju (System Integrator)</option>
+                            <option value="Steven George">Steven George (SME - FICO)</option>
+                            <option value="Kamalraj Pakkirisamy">Kamalraj Pakkirisamy (SME - Cross-App)</option>
+                            <option value="Rupendra Seemakurti">Rupendra Seemakurti (SME - Cross-App)</option>
+                            <option value="Joshua Austin">Joshua Austin (SME - SCM)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>SME Approval Status</label>
+                        <select id="modal-sme-status" class="filter-select" style="width:100%;">
+                            <option value="Pending">Pending</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Rejected">Rejected</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <label style="margin-bottom: 0;">AI Generated Response</label>
+                        <button class="btn btn-primary" id="modal-generate-ai-btn" title="Re-generate AI Response" style="padding: 4px 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; background: linear-gradient(135deg, var(--primary), var(--info)); border: none; color: white; border-radius: 4px; font-weight: 600; cursor: pointer; height: 26px;">
+                            <i data-lucide="sparkles" style="width: 12px; height: 12px;"></i>
+                            <span>Generate</span>
+                        </button>
+                    </div>
+                    <div style="background-color: var(--bg-main); border: 1px solid var(--border); padding: 12px; border-radius: var(--radius-sm); font-size: 13.5px; line-height: 1.5; color: var(--text-muted); font-style: italic; max-height: 100px; overflow-y: auto;" id="modal-ai-response"></div>
+                </div>
+                
+                <div class="form-group" id="modal-references-container" style="display: none; margin-top: 14px; margin-bottom: 14px;">
+                    <label style="margin-bottom: 6px;">Referenced Document Context</label>
+                    <div id="modal-references-list" style="display: flex; flex-direction: column; gap: 10px;"></div>
+                </div>
+                
+                <div class="form-group">
+                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;">
+                        <label style="margin-bottom: 0;">Rephrase / Custom Answer</label>
+                        <button class="btn btn-secondary" id="modal-rephrase-ai-btn" title="Polishes your rough draft with AI" style="padding: 4px 8px; font-size: 11px; display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--border); border-radius: 4px; font-weight: 600; cursor: pointer; height: 26px;">
+                            <i data-lucide="refresh-cw" style="width: 12px; height: 12px;"></i>
+                            <span>Rephrase Draft</span>
+                        </button>
+                    </div>
+                    <textarea id="modal-override-response" placeholder="Type a rough draft or custom answer, then click 'Rephrase Draft' to polish it with AI..."></textarea>
+                </div>
+                
+                <div class="form-group" style="flex-direction: row; gap: 12px; align-items: center;">
+                    <input type="checkbox" id="modal-flagged" style="width: 18px; height: 18px; cursor: pointer;">
+                    <label for="modal-flagged" style="cursor: pointer; font-size: 14px; font-weight: 500;">Flag for Management Review</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-modal-btn">Cancel</button>
+                <button class="btn btn-primary" id="save-modal-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create Bid Modal -->
+    <div class="modal-overlay" id="create-bid-modal">
+        <div class="modal" style="width: 500px;">
+            <div class="modal-header">
+                <h3>Create New Bid Workspace</h3>
+                <span class="modal-close" id="close-bid-modal-btn" style="cursor:pointer; display:flex; align-items:center; justify-content:center;"><i data-lucide="x"></i></span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Bid Opportunity Name</label>
+                    <input type="text" id="new-bid-name" class="filter-select" style="width:100%;" placeholder="e.g. Smart Grid IoT RFP">
+                </div>
+                <div class="form-group">
+                    <label>Lead Bid Manager</label>
+                    <input type="text" id="new-bid-manager" class="filter-select" style="width:100%;" value="Priya Sharma">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                    <div class="form-group">
+                        <label>Complexity</label>
+                        <select id="new-bid-complexity" class="filter-select" style="width:100%;">
+                            <option value="Low">Low</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Submission Due Date</label>
+                        <input type="date" id="new-bid-due-date" class="filter-select" style="width:100%;">
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancel-bid-modal-btn">Cancel</button>
+                <button class="btn btn-primary" id="save-new-bid-btn">Create Workspace</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Document Preview Modal -->
+    <div class="modal-overlay" id="preview-modal">
+        <div class="modal" style="width: 1000px; max-width: 95%; height: 85vh; display: flex; flex-direction: column;">
+            <div class="modal-header">
+                <h3 id="preview-modal-title">Document Preview</h3>
+                <span class="modal-close" id="close-preview-btn" style="cursor:pointer; display:flex; align-items:center; justify-content:center;"><i data-lucide="x"></i></span>
+            </div>
+            <div class="modal-body" id="preview-modal-body" style="overflow-y: auto; flex-grow: 1; padding: 32px; background-color: #ffffff; color: var(--text-main);">
+                <!-- Document content gets loaded here dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="close-preview-footer-btn">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Screen overlay -->
+    <div id="login-container" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg-main); z-index:10000; align-items:center; justify-content:center;">
+        <div class="detail-pane" style="width:100%; max-width:400px; padding:32px; box-shadow:var(--shadow-lg); border-radius:var(--radius-sm); border:1px solid var(--border);">
+            <div style="text-align:center; margin-bottom:28px;">
+                <div style="display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:12px; background:var(--primary); color:#ffffff; font-size:24px; font-weight:700; font-family:'Outfit', sans-serif; margin-bottom:12px;">BG</div>
+                <h1 style="margin:0; font-size:22px; font-weight:700; font-family:'Outfit', sans-serif;">BidGenius AI</h1>
+                <p style="margin:4px 0 0 0; font-size:13px; color:var(--text-muted);">Sign in to access your RFP proposal workspace</p>
+            </div>
+            
+            <form id="login-form" style="display:flex; flex-direction:column; gap:16px;">
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Username</label>
+                    <input type="text" id="login-username" placeholder="e.g. priya.sharma" required style="width:100%;">
+                </div>
+                <div style="display:flex; flex-direction:column; gap:6px;">
+                    <label style="font-size:12px; font-weight:600; color:var(--text-muted);">Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required style="width:100%;">
+                </div>
+                
+                <button type="submit" class="btn btn-primary" style="margin-top:12px; width:100%; display:flex; align-items:center; justify-content:center; gap:8px; height:40px;">
+                    <i data-lucide="log-in"></i> Sign In
+                </button>
+            </form>
+            
+            <div style="margin-top:20px; text-align:center; font-size:12px; color:var(--text-light);">
+                SME Demo Logins: <code>steven.george</code>, <code>joshua.a</code> (Any password)
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Script -->
+    <script src="app.js?v=1.4.1"></script>
+</body>
+</html>
