@@ -31,10 +31,10 @@ app.add_middleware(
 )
 
 DB_PASSWORD = os.getenv("DB_PASSWORD")
-DB_USER = "postgres"
-DB_HOST = "localhost"
-DB_PORT = "5432"
-DB_NAME = "rfp_tracker_db"
+DB_USER = os.getenv("DB_USER", "postgres")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "5432")
+DB_NAME = os.getenv("DB_NAME", "rfp_tracker_db")
 # Resolve dynamic portable paths (supporting local development and other computers)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PORTABLE_DOC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "..", "01-RFPs-RFIs-RFQs"))

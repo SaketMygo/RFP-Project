@@ -12,9 +12,9 @@ def initialize_postgres_tables():
     # ---------------------------------------------------------------------------
     target_db = os.getenv("DB_NAME", "rfp_tracker_db")
     db_password = os.getenv("DB_PASSWORD")
-    db_user = "postgres"
-    db_host = "localhost"
-    db_port = "5432"
+    db_user = os.getenv("DB_USER", "postgres")
+    db_host = os.getenv("DB_HOST", "localhost")
+    db_port = os.getenv("DB_PORT", "5432")
 
     if not db_password:
         print("❌ Error: DB_PASSWORD not found in .env file. Please check your environment setup.")
