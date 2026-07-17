@@ -39,12 +39,8 @@ DB_NAME = os.getenv("DB_NAME", "rfp_tracker_db")
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PORTABLE_DOC_ROOT = os.path.abspath(os.path.join(BASE_DIR, "..", "01-RFPs-RFIs-RFQs"))
 
-if os.path.exists(PORTABLE_DOC_ROOT):
-    DOC_ROOT_DIR = PORTABLE_DOC_ROOT
-    ACTIVE_BIDS_DIR = os.path.join(PORTABLE_DOC_ROOT, "Active Bids")
-else:
-    DOC_ROOT_DIR = r"C:\Users\Saket Dronamraju\Desktop\RFP project\01-RFPs-RFIs-RFQs"
-    ACTIVE_BIDS_DIR = r"C:\Users\Saket Dronamraju\Desktop\RFP project\01-RFPs-RFIs-RFQs\Active Bids"
+DOC_ROOT_DIR = PORTABLE_DOC_ROOT
+ACTIVE_BIDS_DIR = os.path.join(PORTABLE_DOC_ROOT, "Active Bids")
 
 def resolve_bid_folder_path(db_folder_path: str) -> str:
     if not db_folder_path:
